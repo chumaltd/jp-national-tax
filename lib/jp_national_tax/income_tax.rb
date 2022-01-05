@@ -19,7 +19,7 @@ module JpNationalTax
     def year_salary_taxable(income, calc_date)
       salary = responsible_mod_y(calc_date)
                  .send(:年調給与額, income)
-      responsible_module(calc_date)
+      responsible_mod_y(calc_date)
         .send(:給与所得控除後の給与等の金額, salary)
     end
 
@@ -31,7 +31,7 @@ module JpNationalTax
     def year_tax(income_taxable, calc_date)
       income_tax = responsible_mod_y(calc_date)
                      .send(:算出所得税額, income_taxable)
-      responsible_module(calc_date)
+      responsible_mod_y(calc_date)
         .send(:年調年税額, income_tax)
     end
 
