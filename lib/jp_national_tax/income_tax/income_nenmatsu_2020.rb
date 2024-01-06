@@ -44,7 +44,7 @@ module JpNationalTax #:nodoc:
       #
       def 給与所得控除後の給与等の金額(年調給与額)
         case 年調給与額
-        when 1 .. 550_999
+        when 0 .. 550_999
           0
         when 551_000 .. 1_618_999
           年調給与額 - 550_000
@@ -67,7 +67,8 @@ module JpNationalTax #:nodoc:
         when  8_500_000 .. 20_000_000
           年調給与額 - 1_950_000
         else
-          raise '年末調整の対象となりません'
+          STDERR.puts '年末調整の対象となりません'
+          年調給与額 - 1_950_000
         end
       end
 
