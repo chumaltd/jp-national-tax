@@ -64,7 +64,7 @@ end
 xlsx = Roo::Excelx.new(ARGV[0])
 xlsx.each_with_pagename do |name, sheet|
   id, name, version = sheet_defs(xlsx)
-  filename = "#{id}-#{version}-#{name}.tsv"
+  filename = "#{id}-#{version}-#{name.gsub(/\//, '=')[0, 80]}.tsv"
   columns = search_columns(sheet)
 
   CSV.open(filename, "w", col_sep: "\t") do |csv|
