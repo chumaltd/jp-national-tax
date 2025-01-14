@@ -85,19 +85,19 @@ module JpNationalTax
 
         case その月の課税給与所得金額
         when 0 .. 162_500
-          (その月の課税給与所得金額 * BigDecimal("0.05105")).round(0, BigDecimal::ROUND_HALF_UP)
+          (その月の課税給与所得金額 * BigDecimal("0.05105")).round(-1, BigDecimal::ROUND_HALF_UP)
         when 162_501 .. 275_000
-          (その月の課税給与所得金額 * BigDecimal("0.10210")).round(0, BigDecimal::ROUND_HALF_UP) - 8_296
+          (その月の課税給与所得金額 * BigDecimal("0.10210") - 8_296).round(-1, BigDecimal::ROUND_HALF_UP)
         when 275_001 .. 579_166
-          (その月の課税給与所得金額 * BigDecimal("0.20420")).round(0, BigDecimal::ROUND_HALF_UP) - 36_374
+          (その月の課税給与所得金額 * BigDecimal("0.20420") - 36_374).round(-1, BigDecimal::ROUND_HALF_UP)
         when 579_001 .. 750_000
-          (その月の課税給与所得金額 * BigDecimal("0.23483")).round(0, BigDecimal::ROUND_HALF_UP) - 54_113
+          (その月の課税給与所得金額 * BigDecimal("0.23483") - 54_113).round(-1, BigDecimal::ROUND_HALF_UP)
         when 750_001 .. 1_500_000
-          (その月の課税給与所得金額 * BigDecimal("0.33693")).round(0, BigDecimal::ROUND_HALF_UP) - 130_688
+          (その月の課税給与所得金額 * BigDecimal("0.33693") - 130_688).round(-1, BigDecimal::ROUND_HALF_UP)
         when 1_500_001 .. 3_333_333
-          (その月の課税給与所得金額 * BigDecimal("0.40840")).round(0, BigDecimal::ROUND_HALF_UP) - 237_893
+          (その月の課税給与所得金額 * BigDecimal("0.40840") - 237_893).round(-1, BigDecimal::ROUND_HALF_UP)
         else
-          (その月の課税給与所得金額 * BigDecimal("0.45945")).round(0, BigDecimal::ROUND_HALF_UP) - 408_061
+          (その月の課税給与所得金額 * BigDecimal("0.45945") - 408_061).round(-1, BigDecimal::ROUND_HALF_UP)
         end
 
       end
