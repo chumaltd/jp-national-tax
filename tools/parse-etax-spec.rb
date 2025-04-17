@@ -11,6 +11,10 @@ TARGET_COLUMNS = {
   dest: ["version", "tag", "level", "struct", "order", "note", "label"],
 }
 
+def print_usage
+  STDERR.puts "Usage: ruby parse-etax-spec.rb <XML構造設計書.xlsx files>"
+end
+
 def search_columns(xlsx)
   [].tap do |columns|
     xlsx.each_row_streaming do |row|
@@ -60,17 +64,27 @@ def sheet_defs(xlsx)
   }.flatten
 end
 
-# ARGV[0]にはExcelファイルのpathを指定
-xlsx = Roo::Excelx.new(ARGV[0])
-xlsx.each_with_pagename do |name, sheet|
-  id, name, version = sheet_defs(xlsx)
-  filename = "#{id}-#{version}-#{name.gsub(/\//, '=')[0, 80]}.tsv"
-  columns = search_columns(sheet)
 
-  CSV.open(filename, "w", col_sep: "\t") do |csv|
-    csv << TARGET_COLUMNS[:dest]
-    collect_rows(xlsx, columns).each do |row|
-      csv << row.unshift(version)
+# ARGVにはExcelファイルのpathを指定
+if ARGV.length < 1
+  print_usage
+  exit 1
+end
+
+ARGV.each do |path|
+  xlsx = Roo::Excelx.new(path)
+  STDERR.puts "Processing... #{path}"
+
+  xlsx.each_with_pagename do |name, sheet|
+    id, name, version = sheet_defs(xlsx)
+    filename = "#{id}-#{version}-#{name.gsub(/\//, '=')[0, 80]}.tsv"
+    columns = search_columns(sheet)
+
+    CSV.open(filename, "w", col_sep: "\t") do |csv|
+      csv << TARGET_COLUMNS[:dest]
+      collect_rows(xlsx, columns).each do |row|
+        csv << row.unshift(version)
+      end
     end
   end
 end

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 require "csv"
 
-#
-# eTax仕様を変換したTSVを集計して、タグの有効バージョンをリストするツール
-#
+def print_usage
+  STDERR.puts "eTax仕様を変換したTSVを集計して、タグの有効バージョンをリストするツール\n"
+  STDERR.puts "Usage: ruby stats-etax-spec.rb <帳票コード>"
+end
 
 def accumulate_versions(attr, csv)
     csv.each do |row|
@@ -17,10 +18,16 @@ def accumulate_versions(attr, csv)
     end
 end
 
-# ARGV[0]には申請書コード（ファイル名の一部）を指定
+# ARGV[0]には帳票コード（ファイル名の一部）を指定
+if ARGV.length < 1
+  print_usage
+  exit 1
+end
+
 attr = {}
 Dir.glob("#{ARGV[0]}*.tsv").each do |path|
   CSV.open(path, "r", col_sep: "\t", headers: true) do |csv|
+    STDERR.puts "Processing... #{path}"
     accumulate_versions(attr, csv)
   end
 end
@@ -31,3 +38,5 @@ CSV.open(output, "w", col_sep: "\t") do |csv|
     csv << [k, v[:versions].length, v[:level], v[:versions].join(', '), v[:order], v[:label], v[:struct], v[:note]]
   end
 end
+
+STDERR.puts "\n#{output} saved"
