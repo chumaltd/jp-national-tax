@@ -5,8 +5,8 @@ Dir[File.expand_path("income_tax/income*.rb", __dir__)].each { |f| require_relat
 
 module JpNationalTax
   module IncomeTax
-  MOD_M = [Kouran2020]
-  MOD_Y = [Nenmatsu2020]
+  MOD_M = [Kouran2026, Kouran2020]
+  MOD_Y = [Nenmatsu2027, Nenmatsu2025, Nenmatsu2020]
 
     module_function
 
