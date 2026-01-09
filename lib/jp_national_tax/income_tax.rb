@@ -28,6 +28,16 @@ module JpNationalTax
         .send(:基礎控除額, income)
     end
 
+    def family_deduction(birth_date, calc_date, family_income = 0, live_with: nil)
+      responsible_mod_y(calc_date)
+        .send(:扶養控除の額, birth_date, calc_date.year, family_income, 同居: live_with)
+    end
+
+    def spouse_deduction(income, spouse_income, calc_date, spouse_birth_date = nil)
+      responsible_mod_y(calc_date)
+        .send(:配偶者特別控除の金額, income, spouse_income, 配偶者の生年月日: spouse_birth_date, 申告年: calc_date.year)
+    end
+
     def year_tax(income_taxable, calc_date)
       income_tax = responsible_mod_y(calc_date)
                      .send(:算出所得税額, income_taxable)
